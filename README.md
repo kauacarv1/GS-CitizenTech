@@ -1,10 +1,10 @@
-# SEntinela
+# Sentinela
 
-*E SE a dengue chegar? A gente avisa antes.*
+*Antes do mosquito, o aviso.*
 
 | Campo | Conteúdo |
 |---|---|
-| **Nome** | SEntinela (provisório: SentinelaDengue; alternativas: VigiAedes, Aedes Radar) |
+| **Nome** | Sentinela — *Antes do mosquito, o aviso.* |
 | **Cidade e bairro** | Osasco/SP, bairro a definir pela equipe |
 | **Cidadão beneficiado** | Moradores de áreas com histórico de dengue, com foco em idosos, gestantes e crianças; agentes de saúde e gestores da prefeitura |
 | **Problema** | Os surtos pegam moradores e serviços de saúde de surpresa, porque o aviso só chega depois que os casos já subiram |

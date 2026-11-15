@@ -1,4 +1,4 @@
-# SEntinela — Seção 16: exportar os dados do painel
+# Sentinela — Seção 16: exportar os dados do painel
 # Cole este código na célula da seção 16 do notebook (no Colab) e execute. Não retreina modelos:
 # usa os resultados já em cache e leva segundos. Depois baixe o painel_arquivos.zip e descompacte
 # o conteúdo em painel/arquivos/.

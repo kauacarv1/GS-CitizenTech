@@ -1,4 +1,4 @@
-"""SEntinela: painel de previsão de dengue nos municípios de São Paulo.
+"""Sentinela: painel de previsão de dengue nos municípios de São Paulo.
 
 Lê os arquivos gerados pela seção 16 do notebook `Previsao_dengue_SP_v2.ipynb` (pasta `painel/arquivos`).
 Rodar localmente:  streamlit run painel/streamlit_app.py
@@ -15,9 +15,10 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
-st.set_page_config(page_title="SEntinela | Previsão de dengue em SP", page_icon="🦟", layout="wide")
+st.set_page_config(page_title="Sentinela | Previsão de dengue em SP", page_icon="🦟", layout="wide")
 
 DIR_ARQ = Path(__file__).parent / "arquivos"
+SLOGAN = "Antes do mosquito, o aviso."
 MIN_CASOS = 10                 # semana epidêmica: incidência acima do limiar E mais de 10 casos (definição do notebook)
 SEMANAS_INCOMPLETAS = 8        # semanas finais que ainda recebem notificações digitadas com atraso
 AZUL, AZUL_50, AZUL_90 = "#3b82f6", "rgba(59,130,246,0.35)", "rgba(59,130,246,0.15)"
@@ -222,7 +223,7 @@ PLANO_ACAO = {
 
 dados, faltando = carregar()
 if dados is None:
-    st.title("🦟 SEntinela")
+    st.title("🦟 Sentinela")
     st.error("Arquivos de dados não encontrados em `painel/arquivos/`: " + ", ".join(faltando))
     st.markdown("Rode a seção **16. Exportar dados para o painel interativo** do notebook e descompacte o "
                 "`painel_arquivos.zip` nesta pasta.")
@@ -238,8 +239,8 @@ ANOS = f"{META['anos_teste'][0]} a {META['anos_teste'][-1]}"
 
 # ------------------------------------------------------------------ barra lateral
 with st.sidebar:
-    st.markdown('<div class="marca">🦟 <span class="se">SE</span>ntinela</div>'
-                '<div class="slogan">E SE a dengue chegar? A gente avisa antes.</div>', unsafe_allow_html=True)
+    st.markdown('<div class="marca">🦟 <span class="se">S</span>entinela</div>'
+                f'<div class="slogan">{SLOGAN}</div>', unsafe_allow_html=True)
     st.write("")
     padrao = "Campinas" if "Campinas" in NOMES else MUN.loc[MUN["pop"].idxmax(), "nome"]
     nome_mun = st.selectbox("Município", NOMES, index=NOMES.index(padrao))
@@ -287,7 +288,7 @@ with aba_mun:
             for r in hist_m.itertuples())
     else:
         linhas = f"<li>O município não entrou em epidemia de {ANOS}.</li>"
-    c_hist.markdown(f'<div class="plano" style="border-color:{AZUL}"><b>O SEntinela teria avisado?</b>'
+    c_hist.markdown(f'<div class="plano" style="border-color:{AZUL}"><b>O Sentinela teria avisado?</b>'
                     f'<ul style="margin-top:8px">{linhas}</ul></div>', unsafe_allow_html=True)
     st.write("")
 
@@ -381,7 +382,7 @@ with aba_mapa:
 
 # ------------------------------------------------------------------ confiança
 with aba_conf:
-    st.markdown(f"#### Como o SEntinela se saiu de {ANOS}, prevendo com {semanas_txt(h)} de antecedência")
+    st.markdown(f"#### Como o Sentinela se saiu de {ANOS}, prevendo com {semanas_txt(h)} de antecedência")
     st.caption("Cada ano foi previsto por um modelo treinado só com os anos anteriores, como aconteceria no uso real.")
     cartoes([
         ("Alertas que se confirmaram", f"{10 * D['precisao']:.0f} em cada 10",
