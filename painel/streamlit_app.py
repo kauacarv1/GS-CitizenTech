@@ -184,7 +184,8 @@ with aba_mun:
     fig.update_layout(**LAYOUT, height=440, title="Casos por semana: reais e previstos", yaxis_title="casos")
     grafico(fig)
     st.caption("A previsão de cada semana foi feita com os dados disponíveis "
-               f"{h} semana(s) antes, por um modelo treinado só com os anos anteriores (teste de 2023 a 2025). "
+               f"{h} semana(s) antes, por um modelo treinado só com os anos anteriores "
+               f"(teste de {META['anos_teste'][0]} a {META['anos_teste'][-1]}). "
                "Os losangos são a previsão para depois da última semana da base.")
 
     c1, c2, c3 = st.columns(3)
@@ -274,9 +275,16 @@ with aba_estado:
     anos = SERIE.assign(ano=SERIE.semana.dt.year).groupby("ano").casos.sum()
     acima = (SERIE[SERIE.semana == ULTIMA].merge(MUN[["m", "limiar_epidemico"]], on="m")
              .pipe(lambda x: ((x.inc > x.limiar_epidemico) & (x.casos > 10)).sum()))
-    variacao = anos.iloc[-1] / anos.iloc[-2] - 1
-    cartoes([(f"Notificações em {anos.index[-1]}", num(anos.iloc[-1]),
-              f"{variacao:+.0%} em relação a {anos.index[-2]}".replace(".", ","), CINZA),
+    ano_ult = int(anos.index[-1])
+    parcial = ULTIMA < pd.Timestamp(f"{ano_ult}-12-20")
+    if parcial:   # ano em andamento: compara com o mesmo período do ano anterior
+        mesmo_periodo = SERIE[(SERIE.semana.dt.year == ano_ult - 1)
+                              & (SERIE.semana <= ULTIMA - pd.DateOffset(years=1))].casos.sum()
+        comparacao = f"{anos.iloc[-1] / max(mesmo_periodo, 1) - 1:+.0%} em relação ao mesmo período de {ano_ult - 1}"
+    else:
+        comparacao = f"{anos.iloc[-1] / anos.iloc[-2] - 1:+.0%} em relação a {ano_ult - 1}"
+    rot_ano = f"Notificações em {ano_ult}" + (f" (até {ULTIMA:%d/%m})" if parcial else "")
+    cartoes([(rot_ano, num(anos.iloc[-1]), comparacao, CINZA),
              (f"Casos na semana de {ULTIMA:%d/%m/%Y}", num(tot.iloc[-1]), "total do estado", CINZA),
              (f"Previsão para {fe.index[0]:%d/%m/%Y}", num(fe.iloc[0]), f"+{h} semana(s), soma dos municípios", AZUL),
              ("Municípios acima do limiar epidêmico", num(acima), f"semana de {ULTIMA:%d/%m/%Y}", VERMELHO)])
@@ -349,6 +357,7 @@ distribuição dos erros do modelo no período de teste.
 ### Limitações
 
 - A base termina em {pd.Timestamp(META['periodo'][1]):%d/%m/%Y}; a "previsão futura" é para as semanas logo depois dessa data.
+- As semanas mais recentes ainda recebem notificações digitadas com atraso, então os casos reais delas tendem a subir nas próximas atualizações.
 - As previsões tendem a **subestimar epidemias fora do padrão**, como a de 2024 (reintrodução do sorotipo DENV-3).
 - Casos notificados incluem casos depois descartados, e o atraso de digitação não é corrigido (*nowcasting*).
 - É uma ferramenta acadêmica de apoio, não substitui a vigilância epidemiológica oficial.
