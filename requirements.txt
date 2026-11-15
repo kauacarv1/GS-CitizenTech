@@ -1,0 +1,10 @@
+numpy
+pandas
+scipy
+scikit-learn>=1.4
+matplotlib
+requests
+pyarrow
+shapely>=2.0
+earthengine-api
+jupyter

@@ -1,0 +1,15 @@
+# dados baixados pelo notebook (não versionar)
+dados/
+*.zip
+*.nc
+*.parquet
+
+# exceção: dados do painel (pequenos, gerados pela seção 16 do notebook)
+!painel/arquivos/
+!painel/arquivos/*.parquet
+
+# ambiente
+.ipynb_checkpoints/
+__pycache__/
+.venv/
+.cdsapirc
