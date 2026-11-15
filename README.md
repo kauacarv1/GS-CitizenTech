@@ -1,4 +1,6 @@
-# Previsão de Dengue nos Municípios de São Paulo
+# SEntinela: previsão de dengue nos municípios de São Paulo
+
+*E SE a dengue chegar? A gente avisa antes.*
 
 Notebook que monta uma base semanal de dengue para os 645 municípios do estado de São Paulo (2014–2025) a partir das fontes primárias, estima o número reprodutivo efetivo (Rt) e limiares epidêmicos por município, e treina modelos de aprendizado de máquina para prever a incidência e a ultrapassagem do limiar epidêmico 1 e 4 semanas à frente.
 
@@ -43,7 +45,14 @@ Para rodar localmente: `pip install -r requirements.txt` e abra o notebook no Ju
 
 ## Painel interativo (Streamlit)
 
-A pasta `painel/` tem um painel web para explorar os resultados: previsão de casos por município (com faixas de 50% e 90%, limiares, Rt e clima), mapa do estado com o nível de alerta e a probabilidade de semana epidêmica, total do estado e as métricas dos modelos. O painel só lê os arquivos exportados pelo notebook, sem treinar modelos.
+A pasta `painel/` tem o painel web do SEntinela. Ele só lê os arquivos exportados pelo notebook, sem treinar modelos, e tem:
+
+- **Município:** casos reais e previstos com faixas de 50% e 90%, limiares, Rt, clima, nível de alerta, plano de ação para o nível previsto e o histórico dos alertas ("o SEntinela teria avisado?").
+- **Mapa:** nível de alerta, probabilidade de semana epidêmica e incidência dos 645 municípios, semana a semana.
+- **Estado:** total do estado e quantas entradas de municípios em epidemia foram avisadas com antecedência no período de teste.
+- **Simulador:** cenários de temperatura e de ações de controle, com a estimativa de internações e leitos.
+- **Seus dados:** o município envia um CSV com os casos da semana ou o índice de infestação (LIRAa) e vê esses dados ao lado da previsão.
+- **Modelos:** métricas de regressão e classificação.
 
 **Atualizar os dados do painel:** rode a seção 16 do notebook, baixe o `painel_arquivos.zip` e descompacte o conteúdo em `painel/arquivos/`.
 
