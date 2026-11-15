@@ -331,9 +331,8 @@ with aba_sobre:
     st.markdown(f"""
 ### Como funciona
 
-Este painel mostra os resultados do notebook **`Previsao_dengue_SP_v2.ipynb`**, que reproduz em Python as ideias do
-[InfoDengue](https://info.dengue.mat.br/informacoes/) para os {META['n_municipios']} municípios de {META['uf']},
-consultando direto as fontes primárias.
+Este painel mostra os resultados do notebook **`Previsao_dengue_SP_v2.ipynb`**, que monta uma base semanal
+de dengue para os {META['n_municipios']} municípios de {META['uf']} a partir das fontes primárias e treina os modelos de previsão.
 
 | Etapa | O que é feito |
 |---|---|
@@ -358,5 +357,4 @@ distribuição dos erros do modelo no período de teste.
 - SINAN — Dengue: OpenDataSUS, Ministério da Saúde.
 - IBGE: estimativas de população (tabela 6579), Censo 2022 (tabela 4709) e malhas municipais.
 - ERA5-Land (ECMWF/Copernicus), via Google Earth Engine.
-- Codeço, C. T. et al. *InfoDengue: a nowcasting system for the surveillance of arboviruses in Brazil*. 2018.
 """)
