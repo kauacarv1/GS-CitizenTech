@@ -139,17 +139,34 @@ def calcular_antecedencia(prev, mun):
     inicios = (base[base.epidemica & (base.temporada >= primeiro_ano)].sort_values("semana_alvo")
                .groupby(["m", "temporada"]).head(1)[["m", "temporada", "semana_alvo"]])
     hs = sorted((int(x) for x in prev.h.unique()), reverse=True)
+    usa_classificador = "escore_gb" in prev       # alerta = classificador treinado para o evento (corte 0,5)
     for hh in hs:
-        p_h = prev[prev.h == hh][["m", "semana_alvo", "ensemble", "persistencia"]].rename(
-            columns={"ensemble": f"prev_{hh}", "persistencia": f"pers_{hh}"})
+        cols = ["m", "semana_alvo", "ensemble", "persistencia"] + (["escore_gb"] if usa_classificador else [])
+        p_h = prev[prev.h == hh][cols].rename(columns={"ensemble": f"prev_{hh}", "persistencia": f"pers_{hh}",
+                                                       "escore_gb": f"prob_{hh}"})
         inicios = inicios.merge(p_h, on=["m", "semana_alvo"], how="left")
         lim_m = lim.loc[inicios.m].to_numpy()
-        inicios[f"alerta_{hh}"] = inicios[f"prev_{hh}"].to_numpy() >= lim_m
+        if usa_classificador:
+            inicios[f"alerta_{hh}"] = inicios[f"prob_{hh}"].to_numpy() >= 0.5
+        else:
+            inicios[f"alerta_{hh}"] = inicios[f"prev_{hh}"].to_numpy() >= lim_m
         inicios[f"alerta_pers_{hh}"] = inicios[f"pers_{hh}"].to_numpy() >= lim_m
     inicios["semanas_antes"] = np.select([inicios[f"alerta_{hh}"] for hh in hs], hs, 0).astype(int)
     inicios["semanas_antes_pers"] = np.select([inicios[f"alerta_pers_{hh}"] for hh in hs], hs, 0).astype(int)
     inicios["rotulo"] = [f"{t}/{str(t + 1)[2:]}" for t in inicios.temporada]
     return inicios
+
+
+@st.cache_data
+def precisao_alertas(prev, mun):
+    """Fração dos alertas (classificador >= 0,5) que se confirmaram, em todas as semanas do teste, por horizonte."""
+    if "escore_gb" not in prev:
+        return {}
+    lim = mun.set_index("m").limiar_epidemico.loc[prev.m].to_numpy()
+    ev = (prev.y.to_numpy() > lim) & (prev.y_casos.to_numpy() > 10)
+    al = prev.escore_gb.to_numpy() >= 0.5
+    return {int(hh): float((al & ev & (prev.h == hh)).sum() / max((al & (prev.h == hh)).sum(), 1))
+            for hh in prev.h.unique()}
 
 
 def normalizar(texto):
@@ -281,8 +298,9 @@ with aba_mun:
         if len(hist_m):
             linhas = "".join(
                 f"<li>Temporada {r.rotulo}: entrou em epidemia na semana de {r.semana_alvo:%d/%m/%Y}. "
-                + (f"<b style='color:{VERDE}'>Alerta {r.semanas_antes} semana{'s' if r.semanas_antes > 1 else ''} antes.</b>"
-                   if r.semanas_antes else f"<b style='color:{VERMELHO}'>Sem alerta antecipado.</b>") + "</li>"
+                + (f"<b style='color:{VERDE}'>Alerta {r.semanas_antes} semana{'s' if r.semanas_antes > 1 else ''} antes"
+                   + (f" (probabilidade de {getattr(r, f'prob_{r.semanas_antes}'):.0%})" if hasattr(r, f"prob_{r.semanas_antes}") else "")
+                   + ".</b>" if r.semanas_antes else f"<b style='color:{VERMELHO}'>Sem alerta antecipado.</b>") + "</li>"
                 for r in hist_m.itertuples())
         else:
             linhas = "<li>O município não passou do limiar epidêmico no período de teste.</li>"
@@ -417,14 +435,17 @@ with aba_estado:
                                               com_h=("semanas_antes", lambda x: int((x >= h_max).sum())),
                                               algum=("semanas_antes", lambda x: int((x > 0).sum())),
                                               pers=("semanas_antes_pers", lambda x: int((x > 0).sum()))).astype(int)
-        maior = resumo.entradas.idxmax()
-        r = resumo.loc[maior]
+        tot_e, tot_a, tot_h, tot_p = (int(resumo[c].sum()) for c in ["entradas", "algum", "com_h", "pers"])
+        prec = precisao_alertas(PREV, MUN).get(h_max)
+        custo = (f" Em troca, {prec:.0%} dos alertas com {h_max} semanas se confirmaram: cerca de um alarme falso para cada "
+                 f"alerta certo, um custo menor que o de uma epidemia sem preparo." if prec else "")
         st.markdown(
-            f'<div class="destaque"><div class="grande">{r.algum / r.entradas:.0%} das epidemias avisadas antes</div>'
-            f'<div class="texto">Na temporada {maior}, a de mais epidemias no período de teste, {r.entradas} municípios '
-            f'passaram do limiar epidêmico. O SEntinela teria avisado {r.algum} deles antes da primeira semana epidêmica, '
-            f'{r.com_h} com {h_max} semanas de antecedência. Repetindo as últimas semanas (persistência), o aviso antecipado '
-            f'teria chegado para {r.pers}.</div></div>', unsafe_allow_html=True)
+            f'<div class="destaque"><div class="grande">{tot_a / tot_e:.0%} das epidemias avisadas antes de começar</div>'
+            f'<div class="texto">De {META["anos_teste"][0]} a {META["anos_teste"][-1]}, municípios passaram do limiar '
+            f'epidêmico {num(tot_e)} vezes. O alerta do SEntinela chegou antes em {num(tot_a)} delas, e com {h_max} semanas '
+            f'de antecedência em {num(tot_h)} ({tot_h / tot_e:.0%}). Repetindo as últimas semanas (persistência), o aviso '
+            f'chegaria antes em só {num(tot_p)} ({num(100 * tot_p / tot_e, 1)}%).{custo}</div></div>',
+            unsafe_allow_html=True)
         with st.expander("Antecedência dos alertas em cada temporada"):
             st.dataframe(resumo.assign(**{f"avisados {h_max} semanas antes": lambda x: (100 * x.com_h / x.entradas).round().astype(int).astype(str) + "%",
                                           "avisados com alguma antecedência": lambda x: (100 * x.algum / x.entradas).round().astype(int).astype(str) + "%",
@@ -433,8 +454,9 @@ with aba_estado:
                          .rename(columns={"entradas": "municípios que entraram em epidemia"})
                          .rename_axis("temporada"))
             st.caption("Entrada em epidemia: primeira semana da temporada (outubro a setembro) com incidência acima do "
-                       "limiar epidêmico do município e mais de 10 casos. O alerta conta quando a previsão feita "
-                       "1 ou 4 semanas antes já estava acima do limiar.")
+                       "limiar epidêmico do município e mais de 10 casos. O alerta é o do classificador (Gradient Boosting "
+                       "treinado para prever semana epidêmica), quando a probabilidade calculada 1 ou 4 semanas antes "
+                       "passou de 50%. Os números vêm do período de teste, com modelos treinados só com os anos anteriores.")
     tot = SERIE.groupby("semana").casos.sum()
     pe = PREV[PREV.h == h].groupby("semana_alvo")[["y_casos", "ensemble_casos"]].sum()
     fe = FUT[FUT.h == h].groupby("semana_alvo").ensemble_casos.sum()
@@ -632,6 +654,10 @@ de dengue para os {META['n_municipios']} municípios de {META['uf']} a partir da
 **Níveis de alerta** (pela incidência prevista): 🟢 **Baixo**, abaixo do limiar pré-epidêmico; 🟡 **Atenção**,
 entre os limiares; 🔴 **Epidemia**, acima do limiar epidêmico. A **probabilidade de semana epidêmica** usa a
 distribuição dos erros do modelo no período de teste.
+
+O **alerta antecipado** (aba Estado e quadro "O SEntinela teria avisado?") vem do classificador Gradient Boosting,
+treinado para responder diretamente se a semana será epidêmica. Ele avisa mais cedo que a previsão de casos, ao custo
+de mais alarmes falsos.
 
 ### Limitações
 
