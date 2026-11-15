@@ -1,0 +1,258 @@
+{
+ "gerado_em": "15/11/2026 19:19",
+ "uf": "SP",
+ "periodo": [
+  "2013-12-29",
+  "2025-12-28"
+ ],
+ "n_municipios": 645,
+ "n_casos": 6805268,
+ "horizontes": [
+  1,
+  4
+ ],
+ "anos_teste": [
+  2023,
+  2024,
+  2025
+ ],
+ "limiares_treino_ate": "2021-12-31",
+ "regressao": {
+  "1": [
+   {
+    "modelo": "Persistência",
+    "MAE": 19.9633,
+    "RMSE": 307.1057,
+    "R²": 0.6453,
+    "MAE estado": 11433.4328,
+    "R² estado": 0.5497,
+    "MAE relativo": 1.0,
+    "WIS": 19.9633
+   },
+   {
+    "modelo": "Sazonal (ano anterior)",
+    "MAE": 46.6165,
+    "RMSE": 680.7398,
+    "R²": -0.7429,
+    "MAE estado": 21748.8216,
+    "R² estado": -0.4365,
+    "MAE relativo": 2.3351,
+    "WIS": 46.6165
+   },
+   {
+    "modelo": "Regressão linear",
+    "MAE": 17.0989,
+    "RMSE": 195.964,
+    "R²": 0.8556,
+    "MAE estado": 7856.6956,
+    "R² estado": 0.8279,
+    "MAE relativo": 0.8565,
+    "WIS": 17.0989
+   },
+   {
+    "modelo": "GB Poisson (nível)",
+    "MAE": 18.2648,
+    "RMSE": 352.5157,
+    "R²": 0.5326,
+    "MAE estado": 8669.7045,
+    "R² estado": 0.659,
+    "MAE relativo": 0.9149,
+    "WIS": 18.2648
+   },
+   {
+    "modelo": "GB Poisson (crescimento)",
+    "MAE": 16.2041,
+    "RMSE": 284.1113,
+    "R²": 0.6964,
+    "MAE estado": 7887.6837,
+    "R² estado": 0.7361,
+    "MAE relativo": 0.8117,
+    "WIS": 16.2041
+   },
+   {
+    "modelo": "RF (crescimento)",
+    "MAE": 14.8416,
+    "RMSE": 212.0862,
+    "R²": 0.8308,
+    "MAE estado": 6673.8122,
+    "R² estado": 0.8372,
+    "MAE relativo": 0.7434,
+    "WIS": 14.8416
+   },
+   {
+    "modelo": "Ensemble",
+    "MAE": 15.8487,
+    "RMSE": 277.6968,
+    "R²": 0.71,
+    "MAE estado": 7673.6287,
+    "R² estado": 0.7544,
+    "MAE relativo": 0.7939,
+    "WIS": 15.8487
+   },
+   {
+    "modelo": "Quantis (mediana + faixas)",
+    "MAE": 16.77,
+    "RMSE": null,
+    "R²": null,
+    "MAE estado": null,
+    "R² estado": null,
+    "MAE relativo": 0.84,
+    "WIS": 11.356
+   }
+  ],
+  "4": [
+   {
+    "modelo": "Persistência",
+    "MAE": 26.4346,
+    "RMSE": 378.224,
+    "R²": 0.462,
+    "MAE estado": 15113.2136,
+    "R² estado": 0.3376,
+    "MAE relativo": 1.0,
+    "WIS": 26.4346
+   },
+   {
+    "modelo": "Sazonal (ano anterior)",
+    "MAE": 46.6165,
+    "RMSE": 680.7398,
+    "R²": -0.7429,
+    "MAE estado": 21748.8216,
+    "R² estado": -0.4365,
+    "MAE relativo": 1.7635,
+    "WIS": 46.6165
+   },
+   {
+    "modelo": "Regressão linear",
+    "MAE": 23.8255,
+    "RMSE": 369.3538,
+    "R²": 0.4869,
+    "MAE estado": 12314.5419,
+    "R² estado": 0.461,
+    "MAE relativo": 0.9013,
+    "WIS": 23.8255
+   },
+   {
+    "modelo": "GB Poisson (nível)",
+    "MAE": 21.1891,
+    "RMSE": 367.6224,
+    "R²": 0.4917,
+    "MAE estado": 9619.7315,
+    "R² estado": 0.6417,
+    "MAE relativo": 0.8016,
+    "WIS": 21.1891
+   },
+   {
+    "modelo": "GB Poisson (crescimento)",
+    "MAE": 20.8145,
+    "RMSE": 351.1552,
+    "R²": 0.5362,
+    "MAE estado": 10485.0941,
+    "R² estado": 0.5732,
+    "MAE relativo": 0.7874,
+    "WIS": 20.8145
+   },
+   {
+    "modelo": "RF (crescimento)",
+    "MAE": 19.2272,
+    "RMSE": 296.4486,
+    "R²": 0.6695,
+    "MAE estado": 9186.1381,
+    "R² estado": 0.7107,
+    "MAE relativo": 0.7273,
+    "WIS": 19.2272
+   },
+   {
+    "modelo": "Ensemble",
+    "MAE": 19.734,
+    "RMSE": 331.8275,
+    "R²": 0.5859,
+    "MAE estado": 9697.4959,
+    "R² estado": 0.6501,
+    "MAE relativo": 0.7465,
+    "WIS": 19.734
+   },
+   {
+    "modelo": "Quantis (mediana + faixas)",
+    "MAE": 21.565,
+    "RMSE": null,
+    "R²": null,
+    "MAE estado": null,
+    "R² estado": null,
+    "MAE relativo": 0.8158,
+    "WIS": 15.4858
+   }
+  ]
+ },
+ "cobertura": {
+  "1": {
+   "faixa 50%": 0.5699,
+   "faixa 90%": 0.8832
+  },
+  "4": {
+   "faixa 50%": 0.5583,
+   "faixa 90%": 0.8736
+  }
+ },
+ "classificacao": {
+  "1": [
+   {
+    "modelo": "Persistência",
+    "precisão": 0.7914,
+    "sensibilidade": 0.5765,
+    "F1": 0.667,
+    "AP": 0.7781
+   },
+   {
+    "modelo": "Regressão (Ensemble)",
+    "precisão": 0.7833,
+    "sensibilidade": 0.7687,
+    "F1": 0.7759,
+    "AP": 0.8542
+   },
+   {
+    "modelo": "Regressão logística",
+    "precisão": 0.8125,
+    "sensibilidade": 0.7005,
+    "F1": 0.7524,
+    "AP": 0.8191
+   },
+   {
+    "modelo": "Gradient Boosting (classif.)",
+    "precisão": 0.6228,
+    "sensibilidade": 0.9075,
+    "F1": 0.7387,
+    "AP": 0.8761
+   }
+  ],
+  "4": [
+   {
+    "modelo": "Persistência",
+    "precisão": 0.5984,
+    "sensibilidade": 0.4361,
+    "F1": 0.5045,
+    "AP": 0.5592
+   },
+   {
+    "modelo": "Regressão (Ensemble)",
+    "precisão": 0.7242,
+    "sensibilidade": 0.6558,
+    "F1": 0.6883,
+    "AP": 0.7652
+   },
+   {
+    "modelo": "Regressão logística",
+    "precisão": 0.7288,
+    "sensibilidade": 0.6,
+    "F1": 0.6581,
+    "AP": 0.7016
+   },
+   {
+    "modelo": "Gradient Boosting (classif.)",
+    "precisão": 0.5348,
+    "sensibilidade": 0.8608,
+    "F1": 0.6597,
+    "AP": 0.7823
+   }
+  ]
+ }
+}
