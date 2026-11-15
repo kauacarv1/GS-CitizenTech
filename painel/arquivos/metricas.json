@@ -1,5 +1,5 @@
 {
- "gerado_em": "15/11/2026 21:40",
+ "gerado_em": "15/11/2026 23:18",
  "uf": "SP",
  "periodo": [
   "2013-12-29",
@@ -42,13 +42,13 @@
    },
    {
     "modelo": "Regressão linear",
-    "MAE": 14.4593,
+    "MAE": 14.4591,
     "RMSE": 177.3848,
     "R²": 0.8554,
-    "MAE estado": 6646.3162,
+    "MAE estado": 6646.124,
     "R² estado": 0.8368,
     "MAE relativo": 0.8721,
-    "WIS": 14.4593
+    "WIS": 14.4591
    },
    {
     "modelo": "GB Poisson (nível)",
@@ -124,13 +124,13 @@
    },
    {
     "modelo": "Regressão linear",
-    "MAE": 20.3465,
-    "RMSE": 334.3676,
+    "MAE": 20.3455,
+    "RMSE": 334.3671,
     "R²": 0.4862,
-    "MAE estado": 10545.8518,
+    "MAE estado": 10545.113,
     "R² estado": 0.4885,
-    "MAE relativo": 0.9277,
-    "WIS": 20.3465
+    "MAE relativo": 0.9276,
+    "WIS": 20.3455
    },
    {
     "modelo": "GB Poisson (nível)",
