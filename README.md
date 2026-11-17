@@ -14,8 +14,8 @@
 | **Funcionalidades** | Nível de alerta (🟢 Baixo, 🟡 Atenção, 🔴 Epidemia) 1 e 4 semanas à frente<br>Previsão de casos da semana, com faixa de incerteza<br>Chance de semana epidêmica, calibrada com o histórico<br>Mapa do estado, semana a semana<br>Plano de ação para cada nível<br>Prestação de contas: quantos alertas se confirmaram |
 | **Pronto neste repositório** | Base semanal dos 645 municípios de SP (2014–2025), Rt, limiares epidêmicos, modelo de previsão e painel web |
 | **Ainda proposta** | Dispositivos de coleta, app do cidadão e assistente. Hoje o modelo usa SINAN e ERA5-Land no lugar das leituras; o sensoriamento entra depois como mais uma variável, medindo o bairro e não o município |
-| **Autores / Curso** | _preencher_ |
-| **Repositório** | _preencher_ |
+| **Autores / Curso** | Kauã Carvalho de Oliveira (RM 566371) · João Vitor Piccolo (RM 565127) · Gabrielle Calazans (RM 564460) · Jéssica Domingues (RM 562973) · Leonardo Pereira (RM 561349)<br>Engenharia de Software (ESPY2), FIAP |
+| **Repositório** | [github.com/kauacarv1/GS-CitizenTech](https://github.com/kauacarv1/GS-CitizenTech) |
 
 ## Como a previsão é feita
 
