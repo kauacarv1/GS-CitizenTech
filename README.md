@@ -39,8 +39,6 @@ pip install -r painel/requirements.txt
 streamlit run painel/streamlit_app.py
 ```
 
-Para atualizar os dados do painel, rode a seção 16, baixe o `painel_arquivos.zip` e descompacte em `painel/arquivos/`. Para publicar de graça, use [share.streamlit.io](https://share.streamlit.io) apontando para `painel/streamlit_app.py`.
-
 ## Limitações
 
 - O modelo subestima epidemias fora do padrão, como a de 2024, e o começo de cada epidemia.
